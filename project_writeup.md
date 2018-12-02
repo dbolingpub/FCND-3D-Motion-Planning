@@ -68,7 +68,7 @@ curr_local_pos = global_to_local(curr_global_pos, self.global_home)
 Get the current start position and use this as the starting point for our upcoming path planning task. For the conversion between the local frame and the grid relative frame (relative to map center), I defined a method to provide this conversion called get_gridrelative_position().
 
 ```
-grid_start = self.get_gridrelative_position(curr_local_pos[0:2], offsets)
+grid_start = get_gridrelative_position(curr_local_pos[0:2], offsets)
 ```
 
 Previously, I saved the offsets returned from the create_grid method to be used for the NED to grid conversion.
@@ -96,7 +96,7 @@ grid_goal = get_gridrelative_position(goal_local, offsets)
 
 #### 5. Modify A* to include diagonal motion (or replace A* altogether)
 
-In 'planning_utils.py', I modified the Action enumeration to include the additional action and  cost:
+In 'planning_utils.py', I modified the Action enumeration to include the additional actions and associated cost:
 
 ```
 NORTH_WEST = (-1, -1, np.sqrt(2))
