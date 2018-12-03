@@ -147,11 +147,3 @@ path = prune_path(path)
 #### 1. Does it work?
 
 My program enabled the drone to navigate the urban environment successfully. Since the quadcopter is able to start at its current location and be set to have any desired waypoint as its goal, the program can be run multiple times.
-
-A [flight video](./misc/FCND-3D-MotionPlanning-2.mov) of one of the flights is available. 
-
-Here is the command for that flight:
-
-```
-$ python motion_planning.py --goal_longitude -122.398414 --goal_latitude 37.7939265
-```
