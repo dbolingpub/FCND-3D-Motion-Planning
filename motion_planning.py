@@ -51,7 +51,8 @@ class MotionPlanning(Drone):
         self.goal_longitude = goal_longitude
         self.goal_latitude = goal_latitude
 
-        print("Longitude/Latitude (from args): {}, {}".format(self.goal_longitude, self.goal_latitude))
+        # print goal location
+        print("Goal Location (Long/Lat from args): {}, {}".format(self.goal_longitude, self.goal_latitude))
 
     def local_position_callback(self):
         if self.flight_state == States.TAKEOFF:
@@ -141,7 +142,6 @@ class MotionPlanning(Drone):
 
         # debug flag
         debug = True
-        test_run = False
 
         # Requirement #1: 
         # * Read lat0, lon0 from colliders into floating point values
@@ -157,55 +157,30 @@ class MotionPlanning(Drone):
         curr_local_pos = global_to_local(curr_global_pos, self.global_home)
         
         if debug:
-            print()
             print("curr_global_pos: ", curr_global_pos)
             print("curr_global_home: ", curr_global_home)
             print("curr_local_pos: ", curr_local_pos)
-        
-        #print('global home {0}\nposition {1}\nlocal position {2}'.format(self.global_home, self.global_position,
-                                                                         #self.local_position))
+
         # Read in obstacle map
         data = np.loadtxt('colliders.csv', delimiter=',', dtype='Float64', skiprows=2)
         
         # Define a grid for a particular altitude and safety margin around obstacles
         grid, north_offset, east_offset = create_grid(data, TARGET_ALTITUDE, SAFETY_DISTANCE)
-        print("North offset = {0}, east offset = {1}".format(north_offset, east_offset))
-        
-        # Define starting point on the grid (this is just grid center)
-        # grid_start_test = (-north_offset, -east_offset)
-        # print("grid_start (orig): ", grid_start_test)
 
         # save offsets as tuple
         offsets = (north_offset, east_offset)
-        print("offsets: ", offsets)
         
         # Requirement #3: convert start position to current position rather than map center
         grid_start = get_gridrelative_position(curr_local_pos[0:2], offsets)
-        print("grid_start: ", grid_start)
-
-        # Set goal as some arbitrary position on the grid
-        # grid_goal_test = (-north_offset + 10, -east_offset + 10)
-        # print("grid_goal (orig): ", grid_goal_test)
 
         # Requirement #4: set goal as latitude/longitude
         # specified as command line args
         custom_goal_pos = (self.goal_longitude, self.goal_latitude, 0)
         goal_local = global_to_local(custom_goal_pos, self.global_home)[0:2]
         grid_goal = get_gridrelative_position(goal_local, offsets)
-        print("grid_goal: ", grid_goal)
-        
-        """
-        print("is test run?: ", test_run)
-        if test_run:
-            # grid_start = grid_start_test
-            grid_goal = grid_goal_test
-            print("test run (start, end): ", (grid_start, grid_goal))
-        """
 
         # Run A* to find a path from start to goal
-        # TODO: add diagonal motions with a cost of sqrt(2) to your A* implementation
-        # or move to a different search space such as a graph (not done here)
-        print('Local Start and Goal: ', grid_start, grid_goal)
+        print('Grid Start and Goal: ', grid_start, grid_goal)
         print('START: Path planning....')
         path, _ = a_star(grid, heuristic, grid_start, grid_goal)
         print('Path planning complete!')

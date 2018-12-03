@@ -12,15 +12,13 @@ The sections below correspond to the project [rubric](https://review.udacity.com
 
 #### 1. Explain the functionality of what's provided in `motion_planning.py` and `planning_utils.py`
 
-In the starter code in 'motion_planning.py', an additional Planning state has been added to the backyard flyer impplementation. This state occursafter arming and before takeoff. Then, as an event handler for that state, the method plan_path() has been added.
-
-The plan_path method does the following things:
+As compared to the backyard flyer implementation, 'motion_planning.py' has an additional Planning state. To handle the Planning state transition, there is an event handler called plan_path. This method has the following features:
 
 * Sets the flight state to Planning
 * Provides a hardcoded target altitude and safety distance
 * Creates a grid representation of the configuration space with the target altitude and safety distance
 * Reads in the obstacle data from a file
-* Establishes a start and goal position
+* Establishes a set start and goal position
 * Uses A* to plan a path through the configuration space from the start state to the goal state using the provided heuristic as a cost function
 
 The included 'planning_utils.py' has several utility features that are used by the path_plan method. These utility features are:
@@ -35,7 +33,7 @@ The included 'planning_utils.py' has several utility features that are used by t
 
 #### 1. Set your global home position
 
-I created a method (self.get_latlon_fromfile) that parsed the first line of 'colliders.csv' to obtain the latitude and longitude of the current start position in the geodetic frame. I extracted the values, then cast them to type float. 
+I created a method called get_latlon_fromfile that parses the first line of 'colliders.csv' to obtain the latitude and longitude of the current start position in the geodetic frame. I extracted the values, then cast them to type float. 
 
 ```
 lat0, lon0 = get_latlon_fromfile('colliders.csv')
@@ -123,7 +121,7 @@ if x + 1 > n or y + 1 > m or grid[x + 1, y + 1] == 1:
 I created a path pruning algo called prune_path, which used a collinearity test to determine if a given set of points are collinear within a given threshold. 
 
 ```
-def collinearity_test(self, p1, p2, p3, epsilon=1e-6):   
+def collinearity_test(p1, p2, p3, epsilon=1e-6):   
     m = np.concatenate((p1, p2, p3), 0)
     det = np.linalg.det(m)
     return abs(det) < epsilon
@@ -134,19 +132,26 @@ Then, in the pruning algorithm, if the points were collinear, then the middle po
 Then I ran it on the path returned from A*:
 
 ```
-path = self.prune_path(path)
+path = prune_path(path)
 ```
+
+
+
+
+![Flight Video Screeshot](./misc/FCND-3D-MotionPlanning-Img2.png)
+
+---
 
 ### Execute the flight
 
 #### 1. Does it work?
 
-My program enabled the drone to navigate the urban environment successfully. Since it is able to start at its current location, and be directed to any desired goal waypoint, the program can be run multiple times.
+My program enabled the drone to navigate the urban environment successfully. Since the quadcopter is able to start at its current location and be set to have any desired waypoint as its goal, the program can be run multiple times.
 
-#### Path Planning v1 (Diagonal Paths)
+A [flight video](./misc/FCND-3D-MotionPlanning-2.mov) of one of the flights is available. 
 
-Planner specs:
-* Single phase (global-plan only)
-* Grid-based representation
-* No vehicle dynamics
-* Straight and diagonal paths
+Here is the command for that flight:
+
+```
+$ python motion_planning.py --goal_longitude -122.398414 --goal_latitude 37.7939265
+```
