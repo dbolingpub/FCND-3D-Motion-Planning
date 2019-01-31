@@ -1,12 +1,18 @@
-## Flying Car: 3D Motion Planning
+# Flying Car: 3D Motion Planning
+
+![Quad Image](./misc/enroute.png)
+
+## Overview
 
 The 3D Motion Planning project is the second project in the Udacity Flying Car Nanodegree. In this project, our goal is to create a path planning algorithm that enables an autonomous quadcopter to plan and navigate through a complex urban environment to any desired goal location.
 
 The sections below correspond to the project [rubric](https://review.udacity.com/#!/rubrics/1534/view)  and outline how each requirement was satisfied.
 
-![Quad Image](./misc/enroute.png)
+## Project Setup
 
----
+In order to get this project to run on your machine, follow the Development Guide Setup section  in the original [README](./README_FromParentRepo.md) from the [parent repo](https://github.com/udacity/FCND-Motion-Planning). 
+
+## Project Details
 
 ### Explain the Starter Code
 
