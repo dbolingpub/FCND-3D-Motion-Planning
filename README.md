@@ -10,7 +10,7 @@ The sections below correspond to the project [rubric](https://review.udacity.com
 
 ## Project Setup
 
-In order to get this project to run on your machine, follow the Development Guide Setup section  in the original [README](./README_FromParentRepo.md) from the [parent repo](https://github.com/udacity/FCND-Motion-Planning). 
+In order to get this project to run on your machine, follow the instructions in the original [README](./README_FromParentRepo.md) from the [parent repo](https://github.com/udacity/FCND-Motion-Planning). 
 
 ## Project Details
 
